@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
-""" Multiple coutines """
+""" Multiple coroutines """
 
 import asyncio
-import time
 from typing import List
-wait_n = __import__('1-concurrent_coroutines').wait_n
+from asyncio import gather
+from bisect import insort
 
-async def measure_runtime(n: int, max_delay: int) -> float:
-    """ measure runtime """
-    start = time()
-    await wait_n(n, max_delay)
-    end = time()
-    return end - start
+wait_random = __import__('0-basic_async_syntax').wait_random
+
+
+async def wait_n(n: int, max_delay: int = 10) -> List[float]:
+    """Spawns wait_random n times and returns list of delays in ascending order."""
+    delays = []
+    tasks = [wait_random(max_delay) for _ in range(n)]
+    
+    for task in asyncio.as_completed(tasks):
+        delay = await task
+        insort(delays, delay)
+    
+    return delays
