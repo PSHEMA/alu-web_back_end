@@ -53,6 +53,7 @@ class Server:
             "index": index,
             "data": dataset.get(index),
             "page_size": page_size,
-            "next_index": index + page_size if index + page_size < len(dataset) 
-                                            else None
+            "next_index": (index + page_size
+                           if index + page_size < len(dataset())
+                           else None),
         }
