@@ -5,12 +5,15 @@ import csv
 import math
 from typing import List
 
+index_range = __import__('0-simple_helper_function').index_range
+
 
 def index_range(page: int, page_size: int) -> tuple:
     """ index range """
     start = (page - 1) * page_size
     end = start + page_size
     return (start, end)
+
 
 class Server:
     """Server class to paginate a database of popular baby names.
