@@ -9,5 +9,5 @@ def filter_datums(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """ Redact message """
     for field in fields:
-        message = re.sub(f'{field}=[^{separator}]*', f'{field}={redaction}', message)
+        message = re.sub(field + "=.*?" + separator, field + "=" + redaction + separator, message)
     return message
