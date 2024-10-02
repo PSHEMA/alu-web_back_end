@@ -42,11 +42,12 @@ class TestGetJson(unittest.TestCase):
         ("https://example.com", {"payload": True}),
     ])
     def test_get_json(self, url, payload):
-        """ Test get_json """
+        """ Test for get_json method """
         payload = {"payload": True}
-        with patch.object(requests, "get") as mock_get:
+        with patch.object(requests, 'get') as mock:
             mock.return_value.json.return_value = payload
             self.assertEqual(get_json(url), payload)
+
 
 if __name__ == "__main__":
     unittest.main()
