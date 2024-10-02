@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """ Unittests for utils.py """
 import unittest
-from unittest.mock import Mock
+from unittest import mock
+from unittest.mock import patch
 
-from requests import patch
+import requests
 from parameterized import parameterized
 from utils import access_nested_map, get_json
 
@@ -43,10 +44,8 @@ class TestGetJson(unittest.TestCase):
     def test_get_json(self, url, payload):
         """ Test get_json """
         payload = {"payload": True}
-
-        with patch('utils.requests.get') as mock_get:
-            mock_get.return_value = Mock()
-            mock_get.return_value.json.return_value = payload
+        with patch.object(requests, "get") as mock_get:
+            mock.return_value.json.return_value = payload
             self.assertEqual(get_json(url), payload)
 
 if __name__ == "__main__":
