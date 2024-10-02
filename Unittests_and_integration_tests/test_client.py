@@ -14,35 +14,37 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google",),
         ("abc",),
     ])
-    @patch('client.get_json', return_value={"repos_url":
-                                            "https://api.github.com/orgs/google/repos"
-                                            })
+    @patch('client.get_json', return_value={
+        "repos_url": "https://api.github.com/orgs/google/repos"
+    })
     def test_org(self, org_name, mock_get_json):
         """Test that GithubOrgClient.org returns the correct value"""
         client = GithubOrgClient(org_name)
         result = client.org
         mock_get_json.assert_called_once_with(
             f"https://api.github.com/orgs/{org_name}")
-        self.assertEqual(result, {"repos_url":
-                                  f"https://api.github.com/orgs/{org_name}/repos"
-                                  })
-    
-    
+        self.assertEqual(result, {
+            "repos_url": f"https://api.github.com/orgs/{org_name}/repos"
+        })
+
     def test_public_repos_url(self):
         """Test the _public_repos_url property"""
         with patch('client.GithubOrgClient.org', new_callable=property) as mock_org:
-            mock_org.return_value = {"repos_url": "https://api.github.com/orgs/google/repos"}
+            mock_org.return_value = {
+                "repos_url": "https://api.github.com/orgs/google/repos"
+            }
             client = GithubOrgClient("google")
             result = client._public_repos_url
             self.assertEqual(result, "https://api.github.com/orgs/google/repos")
-    
+
     @patch("client.get_json")
     def test_public_repos(self, mock):
-        """ test public repos """
+        """Test public repos"""
         mock.return_value = [{"name": "testing"}, {"name": "todo-app"}]
-        with patch.object(GithubOrgClient,
-                          '_public_repos_url',
-                          return_value="https://api.github.com/orgs/izzy"):
+        with patch.object(
+            GithubOrgClient, '_public_repos_url',
+            return_value="https://api.github.com/orgs/izzy"
+        ):
             org = GithubOrgClient("izzy")
             self.assertEqual(org.public_repos(), ["testing", "todo-app"])
             mock.assert_called_once()
