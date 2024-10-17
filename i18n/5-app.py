@@ -32,11 +32,13 @@ def get_user() -> dict:
         return users.get(int(user_id))
     return None
 
+
 @app.before_request
 def before_request() -> None:
     """ before_request """
     user = get_user()
     g.user = user
+
 
 @babel.localeselector
 def get_locale() -> str:
