@@ -55,7 +55,6 @@ def replay(method: Callable):
             )
 
 
-
 class Cache:
     """ Cache class to interact with Redis """
     def __init__(self):
