@@ -6,13 +6,14 @@ from typing import Union, Callable, Optional
 from functools import wraps
 
 
-def count_calls(fn: Callable) -> Callable:
-    """ count calls """
-    @wraps(fn)
+def count_calls(method: Callable) -> Callable:
+    """Decorator to count how many times a method is called."""
+    @wraps(method)
     def wrapper(self, *args, **kwargs):
-        """ wrapper """
-        self._redis.incr(f"{fn.__qualname__}:count")
-        return fn(self, *args, **kwargs)
+        """Wrapper function that increments the call count and invokes the original method."""
+        key = method.__qualname__
+        self._redis.incr(key)
+        return method(self, *args, **kwargs)
     return wrapper
 
 
