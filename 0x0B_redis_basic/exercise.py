@@ -24,6 +24,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
         
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """ store data in redis """
         key = str(uuid.uuid4())
@@ -44,8 +45,3 @@ class Cache:
     def get_int(self, key: str) -> int:
         """ get int from redis """
         return self.get(key, int)
-    
-    @count_calls
-    def store(self, data: Union[str, bytes, int, float]) -> str:
-        """ store data in redis """
-        return super().store(data)
