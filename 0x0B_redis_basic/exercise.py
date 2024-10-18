@@ -49,7 +49,11 @@ def replay(method: Callable):
 
     print(f"{method.__qualname__} was called {len(inputs)} times:")
     for inp, outp in zip(inputs, outputs):
-        print(f"{method.__qualname__}(*{inp.decode('utf-8')}) -> {outp.decode('utf-8')}")
+        print(
+                f"{method.__qualname__}(*{inp.decode('utf-8')}) -> "
+                f"{outp.decode('utf-8')}"
+            )
+
 
 
 class Cache:
@@ -58,7 +62,7 @@ class Cache:
         """ initialize redis connection and flush database """
         self._redis = redis.Redis()
         self._redis.flushdb()
-    
+
     @count_calls
     @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
@@ -67,7 +71,10 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[Callable] = None) -> Union[bytes, str, int, float]:
+    def get(
+                self, key: str, fn: Optional[Callable] = None
+            ) -> Union[bytes, str, int, float]:
+
         """ get data from redis """
         data = self._redis.get(key)
         if fn:
