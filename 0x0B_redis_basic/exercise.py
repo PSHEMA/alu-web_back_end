@@ -36,8 +36,9 @@ def replay(self, method: Callable) -> None:
     """Replay the history of inputs and outputs for a particular function."""
     inputs = self._redis.lrange(f"{method.__qualname__}:inputs", 0, -1)
     outputs = self._redis.lrange(f"{method.__qualname__}:outputs", 0, -1)
+    print(f"{method.__qualname__} was called {len(inputs)} times:")
     for inp, out in zip(inputs, outputs):
-        print("{}(*{}) -> {}".format(method.__qualname__, inp, out))
+        print("{}(*{}) -> {}".format(method.__qualname__, inp.decode('utf-8'), out.decode('utf-8')))
 
 
 class Cache:
