@@ -32,6 +32,14 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(self, method: Callable) -> None:
+    """Replay the history of inputs and outputs for a particular function."""
+    inputs = self._redis.lrange(f"{method.__qualname__}:inputs", 0, -1)
+    outputs = self._redis.lrange(f"{method.__qualname__}:outputs", 0, -1)
+    for inp, out in zip(inputs, outputs):
+        print("{}(*{}) -> {}".format(method.__qualname__, inp, out))
+
+
 class Cache:
     """ Cache class to interact with Redis """
     def __init__(self):
