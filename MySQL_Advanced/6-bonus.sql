@@ -7,9 +7,8 @@ CREATE PROCEDURE AddBonus(
     IN score INT
 )
 BEGIN
-    INSERT INTO projects(name)
-    VALUES(project_name);
-    INSERT INTO corrections(correlation_id, user_id, score, project_id)
-    VALUES(user_id, user_id, score, (SELECT id FROM projects WHERE name = project_name));
+    INSERT IGNORE INTO projects(name) VALUES(project_name);
+    INSERT INTO corrections(user_id, project_id, score)
+    VALUES(user_id, (SELECT id FROM projects WHERE name = project_name), score);
 END$$
 DELIMITER ;
