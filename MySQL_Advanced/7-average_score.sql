@@ -6,11 +6,8 @@ CREATE PROCEDURE ComputeAverageScoreForUser(
     IN user_id INT
 )
 BEGIN
-    DECLARE total_score INT;
-    SELECT SUM(score) INTO total_score FROM corrections WHERE user_id = user_id;
-    IF total_score IS NULL THEN
-        SET total_score = 0;
-    END IF;
-    UPDATE users SET average_score = total_score / (SELECT COUNT(*) FROM corrections WHERE user_id = user_id) WHERE id = user_id;
+    DECLARE average_score FLOAT;
+    SELECT AVG(score) INTO average_score FROM corrections WHERE user_id = input_user_id;
+    UPDATE users SET average_score = average_score WHERE id = input_user_id;
 END$$
 DELIMITER;
