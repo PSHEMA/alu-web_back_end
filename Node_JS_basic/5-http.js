@@ -6,13 +6,13 @@ function countStudents(path) {
     if (!path) {
       reject(new Error('Cannot load the database'));
     }
-    
+
     fs.readFile(path, 'utf8')
       .then((data) => {
         const lines = data
           .split('\n')
           .filter((line) => line.trim().length > 0);
-        
+
         const students = lines.slice(1);
         if (students.length === 0) {
           reject(new Error('Cannot load the database'));
@@ -48,12 +48,12 @@ function countStudents(path) {
 
 const app = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  
+
   if (req.url === '/') {
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
     const databasePath = process.argv[2];
-    
+
     let response = 'This is the list of our students\n';
     countStudents(databasePath)
       .then((data) => {
